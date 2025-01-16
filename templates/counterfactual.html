@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Counterfactual Explanation</h1>
+<form action="/counterfactual" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" class="form-control mb-3">
+    <button type="submit" class="btn btn-primary">Generate Counterfactual</button>
+</form>
+
+{% if image_path %}
+    <div class="row mt-4">
+        <!-- Original Image and Explanation -->
+        <div class="col-md-6">
+            <h2>Original Image:</h2>
+            <img src="{{ image_path }}" alt="Original Image" width="100%">
+            <h3>Explanation of Original Image</h3>
+            <p>
+                The original image represents the input as provided to the model. The prediction and probability 
+                shown below are the results of the model's inference without any modifications to the image.
+            </p>
+            <p><strong>Original Class:</strong> {{ predicted_class_original }}</p>
+            <p><strong>Original Probability:</strong> {{ probability_original }}</p>
+        </div>
+
+        <!-- Perturbed Image and Explanation -->
+        <div class="col-md-6">
+            <h2>Perturbed Image:</h2>
+            <img src="{{ perturbed_image_path }}" alt="Perturbed Image" width="100%">
+            <h3>Explanation of Perturbed Image</h3>
+            <p>
+                The perturbed image has been modified by masking a specific region to simulate a counterfactual. 
+                This shows how the model's prediction changes when parts of the input are altered.
+            </p>
+            <p><strong>Perturbed Class:</strong> {{ predicted_class_perturbed }}</p>
+            <p><strong>Perturbed Probability:</strong> {{ probability_perturbed }}</p>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

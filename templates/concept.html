@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Concept-Based Explanation</h1>
+<form action="/concept" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" class="form-control mb-3">
+    <button type="submit" class="btn btn-primary">Upload and Classify</button>
+</form>
+
+{% if image_path %}
+    <h2>Uploaded Image:</h2>
+    <img src="{{ image_path }}" alt="Uploaded Image" width="300">
+
+    <div class="row mt-4">
+        <!-- Grad-CAM Image and Explanation -->
+        <div class="col-md-6">
+            <h2>Grad-CAM Visualization:</h2>
+            <img src="{{ gradcam_image_path }}" alt="Grad-CAM Heatmap" width="100%">
+            <h3>Explanation of Grad-CAM</h3>
+            <p>
+                Grad-CAM (Gradient-weighted Class Activation Mapping) helps visualize which parts of the image 
+                the model focused on when making predictions. It uses gradients to generate a heatmap, 
+                highlighting the important areas in the image.
+            </p>
+        </div>
+
+        <!-- LRP Image and Explanation -->
+        <div class="col-md-6">
+            <h2>Lrp-Alpha-Beta Visualization:</h2>
+            <img src="{{ lrp_image_path }}" alt="Lrp-Alpha-Beta Heatmap" width="100%">
+            <h3>Explanation of LRP</h3>
+            <p>
+                Layer-wise Relevance Propagation (LRP) assigns relevance scores to each pixel, showing which 
+                parts of the image are most responsible for the model's prediction. It works by propagating 
+                the prediction score backwards through the network layers.
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h2>Prediction:</h2>
+        <p><strong>Predicted Class:</strong> {{ predicted_class }}</p>
+        <p><strong>Probability:</strong> {{ probability }}</p>
+    </div>
+{% endif %}
+{% endblock %}
